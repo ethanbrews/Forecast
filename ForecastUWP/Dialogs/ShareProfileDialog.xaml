@@ -1,0 +1,29 @@
+﻿<ContentDialog
+    x:Class="ForecastUWP.Dialogs.ShareProfileDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ForecastUWP.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title=""
+    PrimaryButtonText="Close"
+    SecondaryButtonText="Share as File"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
+    Background="{StaticResource RegionBrush}"
+    Loading="ShareProfileDialog_OnLoading">
+
+    <StackPanel>
+        <Grid>
+            <TextBlock x:Name="GettingCodeMessage" TextAlignment="Center" Style="{StaticResource TitleTextBlockStyle}"><Run FontFamily="Segoe MDL2 Assets" Text="&#xE704; " />Getting code...</TextBlock>
+            <TextBlock x:Name="CopiedCodeMessage" Visibility="Collapsed" TextAlignment="Center" Style="{StaticResource TitleTextBlockStyle}"><Run FontFamily="Segoe MDL2 Assets" Text="&#xF0E3; " />Copied code to clipboard</TextBlock>
+        </Grid>
+        <Grid>
+            <TextBlock x:Name="CodeBlock" Margin="0 10 0 0" FontSize="42" HorizontalAlignment="Center" TextAlignment="Center" FontFamily="Consolas" Text="" />
+            <ProgressRing x:Name="ProgRing" Margin="0 10 0 0" Height="40" Width="40" IsActive="True" />
+        </Grid>
+        
+        <TextBlock Margin="0 10 0 0" TextAlignment="Center" Style="{StaticResource BodyTextBlockStyle}" Text="Import this profile on another PC by using this code" />
+    </StackPanel>
+</ContentDialog>

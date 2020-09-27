@@ -1,0 +1,28 @@
+﻿<ContentDialog
+    x:Class="ForecastUWP.Dialogs.CreatePageNameProfileDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ForecastUWP.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Save this Profile"
+    PrimaryButtonText="Save"
+    SecondaryButtonText="Cancel"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
+    IsPrimaryButtonEnabled="False"
+    Background="{ThemeResource RegionBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Margin="11 5 0 0"  x:Name="ProfileNameTextBlock" Text="Profile Name" />
+        <TextBox Grid.Row="0" x:Name="ProfileNameBox" Width="300" PlaceholderText="Profile Name" KeyUp="NameBox_KeyUp" />
+        <TextBlock Grid.Row="1" MaxWidth="300" TextWrapping="WrapWholeWords"><Run x:Name="ModCountRun" /> mods will be installed.</TextBlock>
+        <TextBlock x:Name="OverwriteWarning" Visibility="Collapsed" Grid.Row="2" MaxWidth="300" TextWrapping="WrapWholeWords" Foreground="{ThemeResource ErrorBrush}" Text="This will overwrite an existing profile of the same name"></TextBlock>
+    </Grid>
+</ContentDialog>

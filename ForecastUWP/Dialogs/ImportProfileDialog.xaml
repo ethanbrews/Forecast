@@ -1,0 +1,44 @@
+﻿<ContentDialog
+    x:Class="ForecastUWP.Dialogs.ImportProfileDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ForecastUWP.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Enter the pack code"
+    PrimaryButtonText="Install Profile"
+    SecondaryButtonText="Cancel"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
+    IsSecondaryButtonEnabled="True"
+    Loaded="ImportProfileDialog_OnLoaded"
+    Background="{ThemeResource RegionBrush}">
+
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" x:Name="CodeBoxesPanel">
+            <StackPanel.Resources>
+                <Style TargetType="TextBox">
+                    <Setter Property="Width" Value="44" />
+                    <Setter Property="FontSize" Value="42" />
+                    <Setter Property="Margin" Value="0 0 15 0" />
+                    <Setter Property="MinWidth" Value="10" />
+                    <Setter Property="FontFamily" Value="Consolas" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="Background" Value="{ThemeResource AppBarItemDisabledForegroundThemeBrush}" />
+                </Style>
+                <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="{ThemeResource SystemAccentColorDark1}" Opacity="0.2"/>
+                <SolidColorBrush x:Key="TextControlForegroundFocused" Color="{ThemeResource SystemBaseLowColor}"/>
+            </StackPanel.Resources>
+            <TextBox KeyUp="CodeBox_KeyUp" Paste="TextBox_OnPaste" Tag="0" />
+            <TextBox KeyUp="CodeBox_KeyUp" Paste="TextBox_OnPaste" Tag="1" />
+            <TextBox KeyUp="CodeBox_KeyUp" Paste="TextBox_OnPaste" Tag="2" />
+            <TextBox KeyUp="CodeBox_KeyUp" Paste="TextBox_OnPaste" Tag="3" />
+            <TextBox KeyUp="CodeBox_KeyUp" Paste="TextBox_OnPaste" Tag="4" Margin="0" />
+        </StackPanel>
+        <ProgressBar x:Name="SearchingFCHostBar" Margin="0 5 0 0" Opacity="0" Width="276" />
+        <TextBlock MaxWidth="276" Style="{StaticResource BodyTextBlockStyle}" Text="To import a pack, you can input the code of an exported pack here." />
+        <TextBlock x:Name="ErrorBlock" MaxWidth="276" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource ErrorBrush}" Text="" />
+        <TextBlock x:Name="SuccessBlock" MaxWidth="276" Style="{StaticResource BodyTextBlockStyle}" Foreground="{ThemeResource SuccessBrush}" Text="" />
+    </StackPanel>
+</ContentDialog>

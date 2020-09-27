@@ -1,0 +1,2 @@
+MainPackage=C:\Users\ethan\source\repos\ForecastUWP\Forecast\bin\x86\Release\Forecast_1.0.2.0_x86.msix
+SymbolPackage=C:\Users\ethan\source\repos\ForecastUWP\Forecast\obj\x86\Release\Symbols\Forecast_1.0.2.0_x86.appxsym

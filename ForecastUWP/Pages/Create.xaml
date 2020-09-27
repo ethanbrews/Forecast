@@ -1,0 +1,159 @@
+﻿<Page
+    x:Class="ForecastUWP.Pages.Create"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ForecastUWP.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
+    xmlns:converters="using:ForecastUWP.Converters"
+    mc:Ignorable="d"
+    Background="{ThemeResource RegionBrush}"
+    Loaded="Create_OnLoaded">
+
+    <Page.Resources>
+        <converters:PackageNameToDisplayNameConverter x:Key="PackageNameToDisplayNameConverter" />
+    </Page.Resources>
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="20*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="1" Grid.Row="0" Padding="0 14 0 14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <TextBox x:Name="ModsSearchBox" MinWidth="300" HorizontalAlignment="Stretch" PlaceholderText="Search" FontSize="16" TextChanged="SearchBox_OnTextChanged" />
+                <!--<Button Margin="10 0 0 0" Height="34" Content="Search" />-->
+                <!--<ToggleButton Margin="20 0 0 0" Height="34" Content="Show NSFW" />
+                <ToggleButton Margin="10 0 0 0" Height="34" Content="Show Deprecated" />-->
+            </StackPanel>
+            
+            <Button x:Name="InstallButton" Grid.Column="2" Height="34" Click="InstallButton_OnClick" IsEnabled="False">
+                <Button.Content>
+                    <TextBlock>Install <Run x:Name="ModCountRun" /> Mods</TextBlock>
+                </Button.Content>
+                <Button.Flyout>
+                    <Flyout x:Name="InstallButtonFlyout">
+                        <StackPanel Width="290">
+                            <Button Click="ConfirmInstall_Click" Width="280" Margin="5 0 0 0" Content="Install Mods" Background="{ThemeResource SystemControlHighlightAccentBrush}" />
+                            <TextBlock Margin="5 15 0 0" Text="Mods to Install" FontWeight="Bold" />
+                            <ItemsControl x:Name="SelectedModsControl" Margin="5 0 0 0">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Style="{StaticResource BodyTextBlockStyle}" Text="{Binding Name}" />
+                                            <FontIcon Tapped="RemoveFromListButton_Tapped" Grid.Column="2" FontSize="10" FontFamily="Segoe MDL2 Assets" Glyph="&#xE8BB;">
+                                                <ToolTipService.ToolTip>
+                                                    <ToolTip>
+                                                        <ToolTip.Content>
+                                                            <TextBlock>Remove <Run Text="{Binding Name}" /> from list</TextBlock>
+                                                        </ToolTip.Content>
+                                                    </ToolTip>
+                                                </ToolTipService.ToolTip>
+                                            </FontIcon>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock Margin="5 15 0 0" Text="Dependencies" FontWeight="Bold" />
+                            <ItemsControl x:Name="SelectedDependenciesControl" Margin="5 0 0 0">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Style="{StaticResource BodyTextBlockStyle}" Text="{Binding Name}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+        </Grid>
+
+        <ScrollViewer Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1" HorizontalScrollMode="Disabled" VerticalScrollMode="Auto">
+            <ItemsControl x:Name="ModsListPanel">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <controls:WrapPanel HorizontalAlignment="Center">
+                            <controls:WrapPanel.ChildrenTransitions>
+                                <TransitionCollection>
+                                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                                </TransitionCollection>
+                            </controls:WrapPanel.ChildrenTransitions>
+                        </controls:WrapPanel>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <controls:DropShadowPanel BlurRadius="4"
+                                                  ShadowOpacity="1"
+                                                  OffsetX="2"
+                                                  OffsetY="2"
+                                                  Color="Black"
+                                                  VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"
+                                                  IsMasked="True">
+                            <Grid Width="240" Height="240" Background="{ThemeResource SystemControlAcrylicWindowBrush}" Margin="3">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" MinHeight="60" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="16" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <controls:ImageEx x:Name="ModImage" Grid.Row="0" Grid.RowSpan="4" Source="{Binding ImageUri}" ImageExFailed="ImageExBase_OnImageExFailed" />
+                                <Rectangle Grid.Row="0" Grid.RowSpan="4" Opacity=".6" Fill="{ThemeResource SystemControlAcrylicWindowBrush}" />
+                                <Rectangle Grid.Row="0" Grid.RowSpan="4" Tapped="ModPanel_Tapped">
+                                    <Rectangle.Fill>
+                                        <media:BackdropSaturationBrush Saturation="0.7"/>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                                <!--<Border Grid.Row="1" Padding="5" CornerRadius="10">
+                                    <Image Source="https://cdn.thunderstore.io/live/repository/icons/tristanmcpherson-R2API-2.5.14.png.128x128_q85.png" />
+                                </Border>-->
+                                <TextBlock Grid.Row="0" VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding Name, Converter={StaticResource PackageNameToDisplayNameConverter}}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Margin="5 8 5 0" />
+                                <controls:DropShadowPanel Grid.Row="3"
+                                                          BlurRadius="10"
+                                                          ShadowOpacity=".4"
+                                                          OffsetX="2"
+                                                          OffsetY="2"
+                                                          Color="Black"
+                                                          VerticalAlignment="Center"
+                                                          HorizontalAlignment="Center"
+                                                          IsMasked="True">
+                                    <Button Content="Select" Click="SelectButton_OnClick" Width="220" Height="38" HorizontalAlignment="Center" Background="{StaticResource SystemControlHighlightAccentBrush}" Margin="0 0 0 10" />
+                                </controls:DropShadowPanel>
+                            </Grid>
+                        </controls:DropShadowPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</Page>
