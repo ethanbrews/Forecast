@@ -4,6 +4,8 @@ Forecast is a modern, fast and simple-to-use mod manager for Risk of Rain 2 mods
 
 ## To Install for Windows 10, Click [here](ms-appinstaller:?source=http://storage.ethanbrews.me/Forecast/Release/Forecast.appinstaller)
 
+[View on thunderstore.io](https://thunderstore.io/package/ethanbrews/Forecast_Mod_Manager/)
+
 - Modern UI
 - Fast and responsive
 - Runs in a sandbox
