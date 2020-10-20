@@ -17,6 +17,7 @@ namespace ForecastUWP
         public static LocalSettingsValue<bool> UseMarqueeEffectForMods = new LocalSettingsValue<bool>("UseMarqueeEffectForMods", true);
         public static LocalSettingsValue<DateTime> LastUpdatedTime = new LocalSettingsValue<DateTime>("LastUpdatedTime", DateTime.Now);
         public static LocalSettingsValue<string> RequestedThemeName = new LocalSettingsValue<string>("RequestedThemeName", "System");
+        public static LocalSettingsValue<bool> NotificationSoundsEnabled = new LocalSettingsValue<bool>("NotificationSoundsEnabled", true);
 
         public static async Task<StorageFolder> GetRiskOfRain2Folder()
         {

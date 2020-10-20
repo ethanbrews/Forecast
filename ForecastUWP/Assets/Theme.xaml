@@ -75,6 +75,7 @@
                     <Color x:Key="SystemAccentColorLight2">#FFA83242</Color>
                     <Color x:Key="SystemAccentColorLight3">#FF962233</Color>
                     <Color x:Key="SuccessTextColor">#FF00F224</Color>
+                    <Color x:Key="ShadowColor">#FF000000</Color>
                     <Color x:Key="ErrorTextColor">#FFCC0003</Color>
                     <Color x:Key="RegionColor">#FF1A1423</Color>
                     <SolidColorBrush x:Key="RegionBrush" Color="{StaticResource RegionColor}" />
@@ -154,6 +155,7 @@
                     <Color x:Key="SystemAccentColorDark2">#FFAA1F27</Color>
                     <Color x:Key="SystemAccentColorDark3">#FF97141B</Color>
                     <Color x:Key="SuccessTextColor">#FF49A133</Color>
+                    <Color x:Key="ShadowColor">#FF888888</Color>
                     <Color x:Key="ErrorTextColor">#FFCC0003</Color>
                     <RevealBackgroundBrush x:Key="SystemControlHighlightListLowRevealBackgroundBrush" TargetTheme="Light" Color="{ThemeResource SystemRevealListMediumColor}" FallbackColor="{ StaticResource SystemListMediumColor}" />
                     <Color x:Key="RegionColor">#FFD8D9DB</Color>

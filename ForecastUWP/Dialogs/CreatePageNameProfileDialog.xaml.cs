@@ -17,6 +17,7 @@ using ForecastUWP.Data;
 using ForecastUWP.Data.Thunderstore.Packages;
 using ForecastUWP.Helpers;
 using ForecastUWP.Pages;
+using Microsoft.AppCenter.Analytics;
 
 // The Content Dialog item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -27,12 +28,17 @@ namespace ForecastUWP.Dialogs
         private List<Package> _packagesToInstall { get; set; }
         private Frame _frame;
 
-        public CreatePageNameProfileDialog(List<Package> packagesToInstall, Frame frame)
+        public CreatePageNameProfileDialog(List<Package> packagesToInstall, Frame frame, string suggestedName = null)
         {
             _packagesToInstall = packagesToInstall;
             _frame = frame;
             this.InitializeComponent();
             ModCountRun.Text = _packagesToInstall.Count.ToString();
+            if (suggestedName != null)
+            {
+                ProfileNameBox.Text = suggestedName;
+                NameBox_KeyUp(null, null);
+            }
         }
 
         private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
@@ -50,6 +56,7 @@ namespace ForecastUWP.Dialogs
                     Packages = _packagesToInstall.ToArray()
                 }
             }, new SuppressNavigationTransitionInfo());
+            Analytics.TrackEvent("NewPackCreated");
         }
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

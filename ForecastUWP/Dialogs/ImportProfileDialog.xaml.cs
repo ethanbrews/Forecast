@@ -4,19 +4,24 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using ForecastUWP.Data;
 using ForecastUWP.Helpers;
+using Microsoft.AppCenter.Analytics;
 using Microsoft.Toolkit.Uwp.UI.Extensions;
+using Microsoft.Xaml.Interactions.Media;
 
 // The Content Dialog item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -26,28 +31,27 @@ namespace ForecastUWP.Dialogs
     {
 
         static readonly Regex Validator = new Regex(@"^[A-Z0-9]+$");
-        public Profile DownloadedProfile = null;
+        private Profile _downloadedProfile = null;
+        public Profile DownloadedProfile { get; set; }
+        private string CodeText = "";
+        private bool IsControlDown = false;
+        private Storyboard BlinkingElementStoryboard = null;
 
         public ImportProfileDialog()
         {
             this.InitializeComponent();
         }
 
-        private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args) => System.Diagnostics.Debug.Assert(DownloadedProfile != null);
+        private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        {
+            System.Diagnostics.Debug.Assert(_downloadedProfile != null);
+            DownloadedProfile = _downloadedProfile;
+            Analytics.TrackEvent("PackImported");
+        }
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         { 
             //TODO: Import from file
-        }
-
-        private string GetTextFromBoxes()
-        {
-            var s = "";
-            foreach (var box in CodeBoxesPanel.FindChildren<TextBox>())
-            {
-                s += box.Text;
-            }
-            return s;
         }
 
         private async void SearchForPackByCodeAndInstall()
@@ -65,7 +69,7 @@ namespace ForecastUWP.Dialogs
             SearchingFCHostBar.IsIndeterminate = true;
             SearchingFCHostBar.Opacity = 1;
 
-            var txt = GetTextFromBoxes();
+            var txt = CodeText;
             if (txt.Replace(" ", "").Length < 5)
             {
                 SetFailed("Invalid code");
@@ -79,42 +83,61 @@ namespace ForecastUWP.Dialogs
             }
 
             var bson = await response.Content.ReadAsStringAsync();
-            DownloadedProfile = ProfileHelper.ProfileFromBson(bson);
+            _downloadedProfile = ProfileHelper.ProfileFromBson(bson);
             SearchingFCHostBar.IsIndeterminate = false;
             IsPrimaryButtonEnabled = true;
             SearchingFCHostBar.Opacity = 0;
             ErrorBlock.Text = "";
-            SuccessBlock.Text = "Found " + DownloadedProfile.Name;
+            SuccessBlock.Text = "Found " + _downloadedProfile.Name;
         }
 
-        private void CodeBox_KeyUp(object sender, KeyRoutedEventArgs e)
+        private void UpdateTextBlocksForCode()
         {
-            var box = sender as TextBox;
-            var index = Int16.Parse(box.Tag as string);
-            var nextBox = (index == 4 ? null : CodeBoxesPanel.FindChildren<TextBox>().ToList()[index + 1]);
-            if (box.Text.Length > 0)
-                box.Text = box.Text.Substring(box.Text.Length - 1, 1).ToUpper();
-            if (!Validator.IsMatch(box.Text)) 
-                box.Text = "";
-            if (nextBox != null && box.Text != "")
+            var blocks = CodeBoxesPanel.FindChildren<TextBlock>().ToList();
+            for (var i = 0; i < 5; i++)
             {
-                nextBox.Focus(FocusState.Keyboard);
-                nextBox.SelectionStart = nextBox.Text.Length;
+                blocks[i].Text = (CodeText.Length > i ? CodeText[i].ToString() : "_");
             }
-            else if (box.Text != "")
-                SearchForPackByCodeAndInstall();
+
+            if (CodeText.Length == 5)
+                return;
+
+            if (BlinkingElementStoryboard != null)
+                BlinkingElementStoryboard.Stop();
+
+            var animation1 = new DoubleAnimation
+            {
+                To = 0.1,
+                From = 1.0,
+                Duration = TimeSpan.FromSeconds(0.75),
+                FillBehavior = FillBehavior.HoldEnd,
+                AutoReverse = true
+            };
+
+            var elementToBlink = blocks[CodeText.Length];
+            Storyboard.SetTarget(animation1, elementToBlink);
+            Storyboard.SetTargetProperty(animation1, "Opacity");
+
+            BlinkingElementStoryboard = new Storyboard
+            {
+                Duration = TimeSpan.FromSeconds(1.6),
+                RepeatBehavior = RepeatBehavior.Forever
+            };
+
+            BlinkingElementStoryboard.Children.Add(animation1);
+            BlinkingElementStoryboard.Begin();
+
         }
 
         private void PasteIntoBoxes(string text)
         {
             if (text.Length == 5 && Validator.IsMatch(text))
             {
-                var boxes = CodeBoxesPanel.FindChildren<TextBox>().ToList();
-                for (int i = 0; i < 5; i++)
-                {
-                    boxes[i].Text = text[i].ToString();
-                }
+                CodeText = text;
                 SearchForPackByCodeAndInstall();
+                UpdateTextBlocksForCode();
+                if (BlinkingElementStoryboard?.GetCurrentState() == ClockState.Active)
+                    BlinkingElementStoryboard?.Stop();
             }
             
         }
@@ -127,17 +150,58 @@ namespace ForecastUWP.Dialogs
                 string text = await dataPackageView.GetTextAsync();
                 PasteIntoBoxes(text);
             }
+            UpdateTextBlocksForCode();
         }
 
-        private async void TextBox_OnPaste(object sender, TextControlPasteEventArgs e)
+        private static async Task<string> GetClipboardAsync()
         {
-            e.Handled = true;
             DataPackageView dataPackageView = Clipboard.GetContent();
             if (dataPackageView.Contains(StandardDataFormats.Text))
             {
                 string text = await dataPackageView.GetTextAsync();
-                PasteIntoBoxes(text);
+                return text;
             }
+            return "";
+        }
+
+        private async void ImportProfileDialog_OnKeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case VirtualKey.Control:
+                    IsControlDown = false;
+                    return;
+                case VirtualKey.Back:
+                    CodeText = CodeText.Substring(0, (CodeText.Length == 0 ? 0 : CodeText.Length - 1));
+                    UpdateTextBlocksForCode();
+                    return;
+            }
+
+            string value;
+            try
+            {
+                value = VirtualKeyHelper.VirtualKeyToAlphanumericCharacter(e.Key);
+            }
+            catch
+            {
+                return;
+            }
+
+            if (IsControlDown && value == "V")
+                PasteIntoBoxes(await GetClipboardAsync());
+            else if (!IsControlDown && CodeText.Length < 5)
+                CodeText += value;
+
+            UpdateTextBlocksForCode();
+
+            if (CodeText.Length == 5)
+                SearchForPackByCodeAndInstall();
+        }
+
+        private void ImportProfileDialog_OnKeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Control)
+                IsControlDown = true;
         }
     }
 }

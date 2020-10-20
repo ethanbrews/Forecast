@@ -9,6 +9,7 @@
     Title=""
     PrimaryButtonText="Close"
     SecondaryButtonText="Share as File"
+    IsSecondaryButtonEnabled="False"
     PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
     SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
     Background="{StaticResource RegionBrush}"

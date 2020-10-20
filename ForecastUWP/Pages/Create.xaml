@@ -116,7 +116,7 @@
                                                   ShadowOpacity="1"
                                                   OffsetX="2"
                                                   OffsetY="2"
-                                                  Color="Black"
+                                                  Color="{ThemeResource ShadowColor}"
                                                   VerticalAlignment="Center"
                                                   HorizontalAlignment="Center"
                                                   IsMasked="True">
@@ -143,7 +143,7 @@
                                                           ShadowOpacity=".4"
                                                           OffsetX="2"
                                                           OffsetY="2"
-                                                          Color="Black"
+                                                          Color="{ThemeResource ShadowColor}"
                                                           VerticalAlignment="Center"
                                                           HorizontalAlignment="Center"
                                                           IsMasked="True">

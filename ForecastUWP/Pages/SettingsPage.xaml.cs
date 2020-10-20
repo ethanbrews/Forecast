@@ -42,13 +42,16 @@ namespace ForecastUWP.Pages
             RorInstallLocationRun.Text = (await ApplicationSettings.GetRiskOfRain2Folder()).Path;
             PackageInstallLocationRun.Text = ApplicationData.Current.LocalFolder.Path;
 
-            LastUpdatedRun.Text = ApplicationSettings.LastUpdatedTime.Value.ToString("dddd, dd MMMM yyyy HH:mm");
+            //LastUpdatedRun.Text = ApplicationSettings.LastUpdatedTime.Value.ToString("dddd, dd MMMM yyyy HH:mm");
             var version = Package.Current.Id.Version;
             PackageFamilyRun.Text = Package.Current.Id.FamilyName;
             PackageVersionRun.Text = string.Format("{0}.{1}.{2}.{3} {4}", version.Major, version.Minor, version.Build, version.Revision, Package.Current.Id.Architecture.ToString().ToLower());
 
             CrashesToggle.IsOn = await Crashes.IsEnabledAsync();
             AnalyticsToggle.IsOn = await Analytics.IsEnabledAsync();
+
+            NotificationSoundsToggle.IsOn = ApplicationSettings.NotificationSoundsEnabled.Value;
+            ApplicationSoundsToggle.IsOn = ElementSoundPlayer.State == ElementSoundPlayerState.On;
 
             switch (ApplicationSettings.RequestedThemeName.Value)
             {
@@ -75,6 +78,8 @@ namespace ForecastUWP.Pages
             await ApplicationData.Current.LocalCacheFolder.DeleteAsync();
             await ApplicationData.Current.TemporaryFolder.DeleteAsync();
 
+            Analytics.TrackEvent("AppDataReset");
+
             // Attempt restart, with arguments.
             AppRestartFailureReason result =
                 await CoreApplication.RequestRestartAsync("");
@@ -98,7 +103,7 @@ namespace ForecastUWP.Pages
                     await Launcher.LaunchUriAsync(new Uri("https://ethanbrews.me/terms/forecast.html"));
                     break;
                 case "Privacy":
-                    await Launcher.LaunchUriAsync(new Uri("https://ethanbrews.me/privacy/forecast-policy.html"));
+                    await Launcher.LaunchUriAsync(new Uri("https://ethanbrews.me/privacy/forecast.html"));
                     break;
             }
         }
@@ -121,7 +126,7 @@ namespace ForecastUWP.Pages
 
             ApplicationSettings.RiskOfRain2Path.Value = folder.Path;
             RorInstallLocationRun.Text = folder.Path;
-            
+            Analytics.TrackEvent("RiskOfRainDirectoryChanged");
         }
 
         private async void OpenRorFolderButton_Click(object sender, RoutedEventArgs e) =>
@@ -134,17 +139,34 @@ namespace ForecastUWP.Pages
         {
             ApplicationSettings.RequestedThemeName.Value = (sender as RadioButton).Tag as string;
             (App.Current as App).SetThemeFromSettings();
+            Analytics.TrackEvent("ThemeChanged", new Dictionary<string, string> { {"Value", ApplicationSettings.RequestedThemeName.Value } });
         }
 
         private void AnalyticsToggle_OnToggled(object sender, RoutedEventArgs e) =>
             Analytics.SetEnabledAsync(AnalyticsToggle.IsOn);
 
-        private async void CrashesToggle_OnToggled(object sender, RoutedEventArgs e) =>
+        private async void CrashesToggle_OnToggled(object sender, RoutedEventArgs e)
+        {
             Crashes.SetEnabledAsync(CrashesToggle.IsOn);
+        }
+            
 
         private async void ManageSettingsButton_Click(object sender, RoutedEventArgs e)
         {
             await Launcher.LaunchUriAsync(new Uri("ms-settings:appsfeatures-app"));
+            Analytics.TrackEvent("ManageSettingsOpened");
+        }
+
+        private void NotificationSoundsToggle_OnToggled(object sender, RoutedEventArgs e) =>
+            ApplicationSettings.NotificationSoundsEnabled.Value = NotificationSoundsToggle.IsOn;
+
+        private void ApplicationSoundsToggle_OnToggled(object sender, RoutedEventArgs e) => ElementSoundPlayer.State =
+            ApplicationSoundsToggle.IsOn ? ElementSoundPlayerState.On : ElementSoundPlayerState.Off;
+
+        private void CleanUpModsFolder_Click(object sender, RoutedEventArgs e)
+        {
+            Play.CleanUpUnusedModsAsync();
+            ModsFolderCleanedIndicator.Visibility = Visibility.Visible;
         }
     }
 }

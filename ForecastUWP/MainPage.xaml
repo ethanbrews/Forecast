@@ -4,19 +4,66 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:ForecastUWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource RegionBrush}"
     Loaded="MainPage_OnLoaded">
 
     <Grid>
 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        
         <TextBlock x:Name="AppTitleTextBlock"
                    HorizontalAlignment="Left"
                    xmlns:appmodel="using:Windows.ApplicationModel"
                    Style="{StaticResource CaptionTextBlockStyle}"
                    IsHitTestVisible="False"
                    Canvas.ZIndex="1" />
-        <Frame x:Name="ContentFrame"></Frame>
+        <Frame Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="ContentFrame"></Frame>
+        <MediaElement x:Name="NotificationArrivedMediaElement" Source="ms-winsoundevent:Notification.Default" AutoPlay="False"></MediaElement>
+        <Grid x:Name="ToastNotification" Grid.Column="1" Grid.Row="1" Margin="0 0 20 20" Visibility="Collapsed">
+            <Grid.Resources>
+                <Storyboard x:Name="EnterStoryBoard">
+                    <PopInThemeAnimation Storyboard.TargetName="ToastNotification" />
+                </Storyboard>
+                <Storyboard x:Name="ExitStoryBoard">
+                    <PopOutThemeAnimation Storyboard.TargetName="ToastNotification" />
+                </Storyboard>
+            </Grid.Resources>
+            
+                <controls:DropShadowPanel BlurRadius="30"
+                                              ShadowOpacity="1"
+                                              OffsetX="2"
+                                              OffsetY="2"
+                                              Color="{ThemeResource ShadowColor}"
+                                              IsMasked="True">
+                <StackPanel Background="{ThemeResource SystemControlAcrylicElementBrush}" Width="400" MinHeight="100" Padding="20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Orientation="Horizontal">
+                            <FontIcon x:Name="Notification_Icon" Grid.Column="0" FontSize="20" Margin="0 0 5 0" FontFamily="Segoe MDL2 Assets" Glyph="&#xE7BA;"/>
+                            <TextBlock x:Name="Notification_Title" Text="Toast Title Here" Style="{StaticResource TitleTextBlockStyle}" />
+                        </StackPanel>
+                        <Button Grid.Column="1" Margin="0 0 5 0" Background="Transparent" Click="CloseInAppToastButton_Click">
+                            <FontIcon FontSize="20" FontFamily="Segoe MDL2 Assets" Glyph="&#xE711;" />
+                        </Button>
+                    </Grid>
+                    <TextBlock TextWrapping="WrapWholeWords" x:Name="Notification_Text" Margin="0 2 0 0" Text="Description Text Here" Style="{StaticResource BaseTextBlockStyle}" />
+                </StackPanel>
+            </controls:DropShadowPanel>
+                
+            
+            
+        </Grid>
     </Grid>
 </Page>

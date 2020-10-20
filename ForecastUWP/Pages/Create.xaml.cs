@@ -31,6 +31,8 @@ namespace ForecastUWP.Pages
     {
         public List<Package> PreSelectedPackages = null;
         public List<Package> PreSelectedDependencies = null;
+        public string SuggestedName = null;
+        public bool SupressModsPrefilledMessage = false;
     }
 
     /// <summary>
@@ -78,6 +80,15 @@ namespace ForecastUWP.Pages
                         SelectPackage(pkg, true);
                     }
                 }
+
+                for (var i = SelectedPackages.Count - 1; i >= 0; i--)
+                {
+                    if (SelectedDependencies.Where(x => x.Name == SelectedPackages[i].Name).FirstOrDefault() != null)
+                        SelectedPackages.RemoveAt(i);
+                }
+
+                if (!Parameter.SupressModsPrefilledMessage)
+                    MainPage.Current.EnqueueToastNotification("Mods pre-selected", "Some mods have been pre-selected to install.", "\uE946", 16000);
             }
 
             SetInstallButtonText();
@@ -95,11 +106,21 @@ namespace ForecastUWP.Pages
             if (i.Source == null)
                 return;
 
-            var source = (i.Source as Uri).OriginalString;
-            if (source.EndsWith(".png"))
-                i.Source = new Uri(source.Substring(0, source.Length - 3) + "jpg");
+            var sourceUri = i.Source as Uri;
+            var sourceString = sourceUri.OriginalString;
+            if (sourceString.EndsWith(".png"))
+                i.Source = new Uri(sourceString.Substring(0, sourceString.Length - 3) + "jpg");
             else
                 i.Source = null;
+
+            try
+            {
+                var index = Array.IndexOf(App.ThunderstorePackages, App.ThunderstorePackages.Single(x => x.ImageUri == sourceUri));
+                var item = App.ThunderstorePackages[index];
+                item.ImageUri = i.Source as Uri;
+                App.ThunderstorePackages[index] = item;
+            }
+            catch {}
         }
 
         private void InstallButton_OnClick(object sender, RoutedEventArgs e)
@@ -221,7 +242,7 @@ namespace ForecastUWP.Pages
         {
             var allPkg = new List<Package>(SelectedPackages);
             allPkg.AddRange(SelectedDependencies);
-            var dialog = new Dialogs.CreatePageNameProfileDialog(allPkg, Frame);
+            var dialog = new Dialogs.CreatePageNameProfileDialog(allPkg, Frame, Parameter?.SuggestedName);
             await dialog.ShowAsync();
         }
 

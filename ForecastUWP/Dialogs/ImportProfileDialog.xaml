@@ -13,28 +13,28 @@
     SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
     IsSecondaryButtonEnabled="True"
     Loaded="ImportProfileDialog_OnLoaded"
-    Background="{ThemeResource RegionBrush}">
+    Background="{ThemeResource RegionBrush}"
+    KeyUp="ImportProfileDialog_OnKeyUp"
+    KeyDown="ImportProfileDialog_OnKeyDown">
 
     <StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" x:Name="CodeBoxesPanel">
             <StackPanel.Resources>
-                <Style TargetType="TextBox">
+                <Style TargetType="TextBlock">
                     <Setter Property="Width" Value="44" />
                     <Setter Property="FontSize" Value="42" />
-                    <Setter Property="Margin" Value="0 0 15 0" />
+                    <Setter Property="Margin" Value="0 0 5 0" />
                     <Setter Property="MinWidth" Value="10" />
                     <Setter Property="FontFamily" Value="Consolas" />
-                    <Setter Property="BorderThickness" Value="0" />
-                    <Setter Property="Background" Value="{ThemeResource AppBarItemDisabledForegroundThemeBrush}" />
                 </Style>
                 <SolidColorBrush x:Key="TextControlBackgroundFocused" Color="{ThemeResource SystemAccentColorDark1}" Opacity="0.2"/>
                 <SolidColorBrush x:Key="TextControlForegroundFocused" Color="{ThemeResource SystemBaseLowColor}"/>
             </StackPanel.Resources>
-            <TextBox KeyUp="CodeBox_KeyUp" Paste="TextBox_OnPaste" Tag="0" />
-            <TextBox KeyUp="CodeBox_KeyUp" Paste="TextBox_OnPaste" Tag="1" />
-            <TextBox KeyUp="CodeBox_KeyUp" Paste="TextBox_OnPaste" Tag="2" />
-            <TextBox KeyUp="CodeBox_KeyUp" Paste="TextBox_OnPaste" Tag="3" />
-            <TextBox KeyUp="CodeBox_KeyUp" Paste="TextBox_OnPaste" Tag="4" Margin="0" />
+            <TextBlock Text="_" Tag="0" />
+            <TextBlock Text="_" Tag="1" />
+            <TextBlock Text="_" Tag="2" />
+            <TextBlock Text="_" Tag="3" />
+            <TextBlock Text="_" Tag="4" Margin="0" />
         </StackPanel>
         <ProgressBar x:Name="SearchingFCHostBar" Margin="0 5 0 0" Opacity="0" Width="276" />
         <TextBlock MaxWidth="276" Style="{StaticResource BodyTextBlockStyle}" Text="To import a pack, you can input the code of an exported pack here." />

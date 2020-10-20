@@ -164,8 +164,11 @@ namespace ForecastUWP.Pages
             }
             catch (Exception ex)
             {
+                // BroadFileSystemAccess can be disabled in settings. This will cause an UnauthorisedAccessException
                 if (!(ex is UnauthorizedAccessException))
                     Crashes.TrackError(ex);
+                else
+                    MainPage.Current.EnqueueToastNotification("File System Access Disabled", "File system access is disabled for this app in Windows settings. You will be prompted to select the Risk of Rain 2 folder manually instead.", timeoutMs: 30000);
             }
 
             EnableButtons();

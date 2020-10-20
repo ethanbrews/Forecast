@@ -24,7 +24,7 @@
                     <Setter Target="ShadowOpacity" Value="0.8" />
                     <Setter Target="OffsetX" Value="2" />
                     <Setter Target="OffsetY" Value="2" />
-                    <Setter Target="Color" Value="Black" />
+                    <Setter Target="Color" Value="{ThemeResource ShadowColor}" />
                     <Setter Target="IsMasked" Value="True" />
                     <Setter Property="HorizontalAlignment" Value="Stretch" />
                     <Setter Property="Margin" Value="20 5" />
@@ -42,7 +42,7 @@
                     <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="General" Margin="0 0 0 10" />
                     <TextBlock Style="{StaticResource BaseTextBlockStyle}">Package Version: <Run x:Name="PackageVersionRun" /></TextBlock>
                     <TextBlock Style="{StaticResource BaseTextBlockStyle}">Package Family:  <Run x:Name="PackageFamilyRun" /></TextBlock>
-                    <TextBlock Style="{StaticResource BaseTextBlockStyle}">Last Updated:    <Run x:Name="LastUpdatedRun" /></TextBlock>
+                    <TextBlock Margin="0 8">If you like the app and want to support it, consider <Hyperlink NavigateUri="https://www.buymeacoffee.com/ethanbrews">buying me a coffee</Hyperlink> :)</TextBlock>
                     <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
                         <StackPanel.Resources>
                             <Style TargetType="Button">
@@ -74,6 +74,15 @@
             </controls:DropShadowPanel>
             <controls:DropShadowPanel>
                 <StackPanel Style="{StaticResource ContainerStackPanelStyle}">
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Sounds" Margin="0 0 0 10" />
+                    <ToggleSwitch x:Name="NotificationSoundsToggle" Toggled="NotificationSoundsToggle_OnToggled" OffContent="Notification Sounds Disabled"  OnContent="Notification Sounds Enabled"></ToggleSwitch>
+                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="WrapWholeWords" Text="When enabled, a notification sound will play when an in-app notification is shown on screen." />
+                    <ToggleSwitch Margin="0 10 0 0" x:Name="ApplicationSoundsToggle" Toggled="ApplicationSoundsToggle_OnToggled" OffContent="Application Sounds Disabled"  OnContent="Application Sounds Enabled"></ToggleSwitch>
+                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="WrapWholeWords" Text="When enabled, system sounds will play when interacting with controls." />
+                </StackPanel>
+            </controls:DropShadowPanel>
+            <controls:DropShadowPanel>
+                <StackPanel Style="{StaticResource ContainerStackPanelStyle}">
                     <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Install Settings" Margin="0 0 0 10" />
                     <TextBlock Style="{StaticResource BodyTextBlockStyle}" Margin="0 0 0 5">Risk of Rain 2 Folder: <Run x:Name="RorInstallLocationRun" /></TextBlock>
                     <StackPanel x:Name="CantFindExeWarningMessage" Orientation="Horizontal" Margin="0 5 0 15" Visibility="Collapsed">
@@ -86,8 +95,15 @@
                     </StackPanel>
 
                     <TextBlock Margin="0 10 0 5" Style="{StaticResource BodyTextBlockStyle}">Application Folder: <Run x:Name="PackageInstallLocationRun" /></TextBlock>
-                    <Button Content="Open Folder" Click="OpenAppFolderButton_Click"/>
-                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="WrapWholeWords" Text="Windows 10 doesn't allow the install location of UWP apps to be changed." />
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Open Folder" Click="OpenAppFolderButton_Click"/>
+                        <Button Content="Clean up mods folder" Margin="5 0 0 0" Click="CleanUpModsFolder_Click"/>
+                        <StackPanel x:Name="ModsFolderCleanedIndicator" Visibility="Collapsed" Orientation="Horizontal" Margin="6 0 0 0">
+                            <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE73E;" FontSize="15"/>
+                            <TextBlock Margin="3 0 0 0" VerticalAlignment="Center" Text="Mods folder cleaned" />
+                        </StackPanel>
+                    </StackPanel>
+                    <TextBlock Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="WrapWholeWords" Text="Windows 10 doesn't allow the install location of UWP apps to be changed. Cleaning up the mods folder removes any un-used mods from the Forecast mods folder. The mods folder is also cleaned up automatically when profiles are updated or deleted." />
                 </StackPanel>
             </controls:DropShadowPanel>
             <controls:DropShadowPanel>

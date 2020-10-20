@@ -1,2 +1,6 @@
-MainPackage=C:\Users\ethan\source\repos\ForecastUWP\Forecast\bin\x64\Release\Forecast_1.0.2.0_x64.msix
-SymbolPackage=C:\Users\ethan\source\repos\ForecastUWP\Forecast\obj\x64\Release\Symbols\Forecast_1.0.2.0_x64.appxsym
+MainPackage=C:\Users\ethan\RiderProjects\ForecastUWP\Forecast\bin\x64\Release\Forecast_1.2.1.0_x64.msix
+SymbolPackage=C:\Users\ethan\RiderProjects\ForecastUWP\Forecast\obj\x64\Release\Symbols\Forecast_1.2.1.0_x64.appxsym
+ResourcePack=C:\Users\ethan\RiderProjects\ForecastUWP\Forecast\bin\x64\Release\Forecast_1.2.1.0_scale-100.msix
+ResourcePack=C:\Users\ethan\RiderProjects\ForecastUWP\Forecast\bin\x64\Release\Forecast_1.2.1.0_scale-125.msix
+ResourcePack=C:\Users\ethan\RiderProjects\ForecastUWP\Forecast\bin\x64\Release\Forecast_1.2.1.0_scale-150.msix
+ResourcePack=C:\Users\ethan\RiderProjects\ForecastUWP\Forecast\bin\x64\Release\Forecast_1.2.1.0_scale-400.msix

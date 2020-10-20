@@ -5,8 +5,16 @@
     xmlns:local="using:ForecastUWP.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:interop="using:Windows.UI.Xaml.Interop"
+    xmlns:converters="using:ForecastUWP.Converters"
     mc:Ignorable="d"
-    Background="{ThemeResource RegionBrush}">
+    Background="{ThemeResource RegionBrush}"
+    KeyDown="Page_KeyDown"
+    KeyUp="Page_KeyUp">
+
+    <Page.Resources>
+        <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
+    </Page.Resources>
 
     <Grid>
 
@@ -21,31 +29,46 @@
               HorizontalAlignment="Center"
               xmlns:appmodel="using:Windows.ApplicationModel"
               IsHitTestVisible="False"
-              Margin="0 8 0 0"
+              Margin="0 0 0 22"
               Canvas.ZIndex="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="32" />
-            </Grid.RowDefinitions>
-            <FontIcon Grid.Row="0" Margin="0 0 4 15" Grid.Column="0" FontSize="13" FontFamily="Segoe MDL2 Assets" Glyph="&#xE7BA;"/>
-            <TextBlock Grid.Row="0" Grid.Column="1" x:Name="ErrorMessageTextBlock" 
+            <FontIcon VerticalAlignment="Center" Margin="0 0 6 0" Grid.Column="0" FontSize="13" FontFamily="Segoe MDL2 Assets" Glyph="&#xE7BA;"/>
+            <TextBlock VerticalAlignment="Center" Margin="0 0 0 0" Grid.Column="1" x:Name="ErrorMessageTextBlock" 
                        Style="{StaticResource CaptionTextBlockStyle}" Text="Error Message Here" />
+
         </Grid>
 
         <Rectangle x:Name="NavIndicatorRect" Grid.Row="0" Fill="Transparent" />
-        <NavigationView Grid.Row="0" Grid.RowSpan="2" x:Name="NavigationViewControl" PaneDisplayMode="Top" IsSettingsVisible="False" SelectionChanged="NavigationViewControl_OnSelectionChanged">
+        <NavigationView BackRequested="NavigationViewControl_OnBackRequested" Grid.Row="0" Grid.RowSpan="2" x:Name="NavigationViewControl" PaneDisplayMode="Top" IsSettingsVisible="False" SelectionChanged="NavigationViewControl_OnSelectionChanged">
             <NavigationView.MenuItems>
                 <NavigationViewItem Content="Play" x:Name="PlayNavItem" />
-                <NavigationViewItem Content="Create" x:Name="CreateNavItem" />
+                <NavigationViewItem Content="Create" 
+                                    x:Name="CreateNavItem">
+                    <!--<ToolTipService.ToolTip>
+                        <ToolTip x:Name="CreateNavItemTooltip" IsEnabled="{Binding ElementName=CreateNavItem, Path=IsEnabled, Converter={StaticResource InverseBoolConverter}}" Content="Non-occluding ToolTip." PlacementRect="0,0,400,266"/>
+                    </ToolTipService.ToolTip>-->    
+                </NavigationViewItem>
+                <NavigationViewItem Content="Config Editor" x:Name="ConfigEditorNavItem" />
             </NavigationView.MenuItems>
-            <Frame x:Name="ContentFrame" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
+            <Frame x:Name="ContentFrame" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Navigated="ContentFrame_OnNavigated" />
             <NavigationView.PaneFooter>
                 <StackPanel x:Name="FooterStackPanel" Orientation="Horizontal" Visibility="Visible">
-                    <NavigationViewItem x:Name="UpdateButton" Tapped="UpdateButton_OnTapped" Width="42" Icon="Download" Content="Update App" Foreground="{ThemeResource SuccessBrush}" FontWeight="Bold" AutomationProperties.Name="update" />
-                    <NavigationViewItem Tapped="SettingsButton_OnTapped"  Width="42" Icon="Setting" AutomationProperties.Name="settings" />
+                    <NavigationViewItem x:Name="UpdateButton" Tapped="UpdateButton_OnTapped" Foreground="{ThemeResource SuccessBrush}" FontWeight="Bold" AutomationProperties.Name="update">
+                        <StackPanel Orientation="Horizontal">
+                            <FontIcon FontSize="16" Margin="0 0 5 0" FontFamily="Segoe MDL2 Assets" Glyph="&#xE896;"/>
+                            <TextBlock Margin="0 0 14 0" Style="{StaticResource BodyTextBlockStyle}" Text="Update Forecast"/>
+                        </StackPanel>
+                    </NavigationViewItem>
+                    <NavigationViewItem Tapped="SettingsButton_OnTapped"  Width="42" Icon="Setting" AutomationProperties.Name="settings">
+                        <NavigationViewItem.ContextFlyout>
+                            <Flyout>
+                                <Button Content="Open Debug Page" Click="DebugButton_Click" />
+                            </Flyout>
+                        </NavigationViewItem.ContextFlyout>
+                    </NavigationViewItem>
                 </StackPanel>
             </NavigationView.PaneFooter>
         </NavigationView>

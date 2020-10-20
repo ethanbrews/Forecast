@@ -57,13 +57,13 @@
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <EntryPointProjectUniqueName>..\ForecastUWP\ForecastUWP.csproj</EntryPointProjectUniqueName>
     <GenerateAppInstallerFile>True</GenerateAppInstallerFile>
-    <PackageCertificateThumbprint>1D440CD59D6308FD36A8651604FFC7543B436714</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>B2B869E09FA8459D0B6A7DCFCA40518DDA6137EF</PackageCertificateThumbprint>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
     <AppxBundlePlatforms>x86|x64</AppxBundlePlatforms>
     <AppInstallerUri>http://storage.ethanbrews.me/Forecast/Release/</AppInstallerUri>
-    <HoursBetweenUpdateChecks>168</HoursBetweenUpdateChecks>
+    <HoursBetweenUpdateChecks>24</HoursBetweenUpdateChecks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <AppxBundle>Always</AppxBundle>
@@ -101,13 +101,63 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Forecast_TemporaryKey.pfx" />
+    <Content Include="Images\BadgeLogo.scale-100.png" />
+    <Content Include="Images\BadgeLogo.scale-125.png" />
+    <Content Include="Images\BadgeLogo.scale-150.png" />
+    <Content Include="Images\BadgeLogo.scale-200.png" />
+    <Content Include="Images\BadgeLogo.scale-400.png" />
+    <Content Include="Images\LargeTile.scale-100.png" />
+    <Content Include="Images\LargeTile.scale-125.png" />
+    <Content Include="Images\LargeTile.scale-150.png" />
+    <Content Include="Images\LargeTile.scale-200.png" />
+    <Content Include="Images\LargeTile.scale-400.png" />
+    <Content Include="Images\SmallTile.scale-100.png" />
+    <Content Include="Images\SmallTile.scale-125.png" />
+    <Content Include="Images\SmallTile.scale-150.png" />
+    <Content Include="Images\SmallTile.scale-200.png" />
+    <Content Include="Images\SmallTile.scale-400.png" />
+    <Content Include="Images\SplashScreen.scale-100.png" />
+    <Content Include="Images\SplashScreen.scale-125.png" />
+    <Content Include="Images\SplashScreen.scale-150.png" />
     <Content Include="Images\SplashScreen.scale-200.png" />
     <Content Include="Images\LockScreenLogo.scale-200.png" />
+    <Content Include="Images\SplashScreen.scale-400.png" />
+    <Content Include="Images\Square150x150Logo.scale-100.png" />
+    <Content Include="Images\Square150x150Logo.scale-125.png" />
+    <Content Include="Images\Square150x150Logo.scale-150.png" />
     <Content Include="Images\Square150x150Logo.scale-200.png" />
+    <Content Include="Images\Square150x150Logo.scale-400.png" />
+    <Content Include="Images\Square44x44Logo.altform-lightunplated_targetsize-16.png" />
+    <Content Include="Images\Square44x44Logo.altform-lightunplated_targetsize-24.png" />
+    <Content Include="Images\Square44x44Logo.altform-lightunplated_targetsize-256.png" />
+    <Content Include="Images\Square44x44Logo.altform-lightunplated_targetsize-32.png" />
+    <Content Include="Images\Square44x44Logo.altform-lightunplated_targetsize-48.png" />
+    <Content Include="Images\Square44x44Logo.altform-unplated_targetsize-16.png" />
+    <Content Include="Images\Square44x44Logo.altform-unplated_targetsize-256.png" />
+    <Content Include="Images\Square44x44Logo.altform-unplated_targetsize-32.png" />
+    <Content Include="Images\Square44x44Logo.altform-unplated_targetsize-48.png" />
+    <Content Include="Images\Square44x44Logo.scale-100.png" />
+    <Content Include="Images\Square44x44Logo.scale-125.png" />
+    <Content Include="Images\Square44x44Logo.scale-150.png" />
     <Content Include="Images\Square44x44Logo.scale-200.png" />
+    <Content Include="Images\Square44x44Logo.scale-400.png" />
+    <Content Include="Images\Square44x44Logo.targetsize-16.png" />
+    <Content Include="Images\Square44x44Logo.targetsize-24.png" />
     <Content Include="Images\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Content Include="Images\StoreLogo.png" />
+    <Content Include="Images\Square44x44Logo.targetsize-256.png" />
+    <Content Include="Images\Square44x44Logo.targetsize-32.png" />
+    <Content Include="Images\Square44x44Logo.targetsize-48.png" />
+    <Content Include="Images\StoreLogo.scale-100.png" />
+    <Content Include="Images\StoreLogo.scale-125.png" />
+    <Content Include="Images\StoreLogo.scale-150.png" />
+    <Content Include="Images\StoreLogo.scale-200.png" />
+    <Content Include="Images\StoreLogo.scale-400.png" />
+    <Content Include="Images\Wide310x150Logo.scale-100.png" />
+    <Content Include="Images\Wide310x150Logo.scale-125.png" />
+    <Content Include="Images\Wide310x150Logo.scale-150.png" />
     <Content Include="Images\Wide310x150Logo.scale-200.png" />
+    <Content Include="Images\Wide310x150Logo.scale-400.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ForecastUWP\ForecastUWP.csproj" />

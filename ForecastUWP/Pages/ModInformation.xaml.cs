@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Networking.Connectivity;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -46,8 +47,23 @@ namespace ForecastUWP.Pages
 
         private async void LoadThunderstoreWebPageForPackageAsync()
         {
-            var html = await AppWebClient.GetStringAsync(
-                $"https://thunderstore.io/package/{Parameters.PackageToShow.Owner}/{Parameters.PackageToShow.Name}");
+
+            string html;
+            try
+            {
+                html = await AppWebClient.GetStringAsync(
+                    $"https://thunderstore.io/package/{Parameters.PackageToShow.Owner}/{Parameters.PackageToShow.Name}");
+            }
+            catch (Exception ex)
+            {
+
+                // Track error if internet connection is available, otherwise ignore it and return early.
+                if (NetworkInformation.GetInternetConnectionProfile() != null)
+                    Crashes.TrackError(ex);
+
+                return;
+            }
+            
 
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
@@ -66,6 +82,7 @@ namespace ForecastUWP.Pages
                 return;
 
             Parameters = e.Parameter as ModInformationParameters;
+            Parameters.CreateParameters.SupressModsPrefilledMessage = true;
             ModImage.Source = new BitmapImage(Parameters.PackageToShow.ImageUri);
 
             base.OnNavigatedTo(e);

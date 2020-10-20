@@ -33,7 +33,7 @@
                                               ShadowOpacity="1"
                                               OffsetX="2"
                                               OffsetY="2"
-                                              Color="Black"
+                                              Color="{ThemeResource ShadowColor}"
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Center"
                                               IsMasked="True">
@@ -68,12 +68,26 @@
                                 <TextBlock HorizontalAlignment="Center" FontSize="14" Margin="0 0 0 5">Installing mods <Run Text="{Binding CurrentInstalledTotalToInstallProgress.Item1}" />/<Run Text="{Binding CurrentInstalledTotalToInstallProgress.Item2}"/></TextBlock>
                                 <ProgressBar Width="400" Value="{Binding CurrentInstalledTotalToInstallProgress.Item3}" HorizontalAlignment="Center" />
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="-5 0 0 0">
-                                <Button Content="Play with this Profile" Click="PlayButton_Click" Margin="0 0 7 0" />
+                            <StackPanel Orientation="Horizontal" Margin="-5 0 -5 0">
+                                <Button x:Name="PlayButton" Content="Play with this Profile" Click="PlayButton_Click" Margin="0 0 7 0" Background="{StaticResource SystemControlForegroundAccentBrush}">
+                                    <Button.ContextFlyout>
+                                        <Flyout>
+                                            <StackPanel>
+                                                <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Setup the profile, but don't run it?" Margin="0,0,0,12" />
+                                                <Button Click="SetupProfileButton_Click" Content="Setup Profile" />
+                                            </StackPanel>
+                                        </Flyout>
+                                    </Button.ContextFlyout>
+                                </Button>
+                                <Grid x:Name="RepairButtonGrid" Visibility="Collapsed">
+                                    <Button x:Name="RepairButton" Width="144" Content="Repair Profile" Click="RepairButton_Click" Margin="0 0 7 0" Background="{StaticResource SystemControlForegroundAccentBrush}" />
+                                    <ProgressRing x:Name="RepairButtonProgressRing" Width="25" Height="25" />
+                                </Grid>
                                 <StackPanel Orientation="Horizontal" Visibility="{Binding CanBeModified, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <Button Content="Share Profile" Margin="0 0 7 0" Click="ShareProfileButton_Click" />
-                                    <Button Content="Update Mods" Margin="0 0 7 0" />
-                                    <Button Content="Delete Profile" Margin="0 0 7 0">
+                                    <Button Content="Update Mods" Margin="0 0 7 0" Click="UpdateModsButton_Click" />
+                                    <Button Content="Edit" Margin="0 0 7 0" Click="EditProfileButton_OnClick" />
+                                    <Button Content="Delete" Margin="0 0 0 0">
                                         <Button.Flyout>
                                             <Flyout>
                                                 <StackPanel MaxWidth="400">

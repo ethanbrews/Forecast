@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.Web.Http;
 using ForecastUWP.Data;
 using ForecastUWP.Helpers;
+using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using HttpResponseMessage = Windows.Web.Http.HttpResponseMessage;
 
@@ -32,6 +33,7 @@ namespace ForecastUWP.Dialogs
         {
             _profile = profile;
             this.InitializeComponent();
+            Analytics.TrackEvent("ProfileShared");
         }
 
         private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

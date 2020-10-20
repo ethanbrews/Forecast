@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
         <Rectangle Grid.Row="0" Fill="{ThemeResource SystemControlAcrylicWindowBrush}"></Rectangle>
 
-        <controls:DropShadowPanel Grid.Row="1" Margin="50">
+        <controls:DropShadowPanel Grid.Row="1" Margin="50" Color="{ThemeResource ShadowColor}">
             <Grid Background="{ThemeResource SystemControlBackgroundListLowBrush}">
                 <Pivot x:Name="MainPivot" HorizontalContentAlignment="Center" SelectionChanged="MainPivot_OnSelectionChanged">
                     <PivotItem x:Name="Pivot0">
@@ -69,7 +69,7 @@
                                                           ShadowOpacity="1"
                                                           OffsetX="2"
                                                           OffsetY="2"
-                                                          Color="Black"
+                                                          Color="{ThemeResource ShadowColor}"
                                                           Margin="0 20 0 0"
                                                           IsMasked="True">
                                     <StackPanel Width="380" CornerRadius="10">
@@ -114,7 +114,7 @@
                                 <CheckBox x:Name="TOSCheckbox" Margin="0 30 0 0" Checked="TOSCheckbox_OnChecked"
                                           Unchecked="TOSCheckbox_OnUnchecked">
                                     <CheckBox.Content>
-                                        <TextBlock>I agree to the <Hyperlink NavigateUri="https://ethanbrews.me/terms/forecast.html">terms of service</Hyperlink> and <Hyperlink NavigateUri="https://ethanbrews.me/privacy/forecast-policy.html">privacy policy</Hyperlink>.</TextBlock>
+                                        <TextBlock>I agree to the <Hyperlink NavigateUri="https://ethanbrews.me/terms/forecast.html">terms of service</Hyperlink> and <Hyperlink NavigateUri="https://ethanbrews.me/privacy/forecast.html">privacy policy</Hyperlink>.</TextBlock>
                                     </CheckBox.Content>
                                 </CheckBox>
                                 

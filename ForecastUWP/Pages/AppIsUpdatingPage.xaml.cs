@@ -21,14 +21,34 @@ using Dwrandaz.AutoUpdateComponent;
 
 namespace ForecastUWP.Pages
 {
+
+    public class AppIsUpdatingPageParameters
+    {
+        public NavigationView NavBar { get; set; }
+        public Frame ContentFrame { get; set; }
+    }
+
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class AppIsUpdatingPage : Page
     {
+
+        private AppIsUpdatingPageParameters Parameters = null;
+        
         public AppIsUpdatingPage()
         {
             this.InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            if (e.Parameter != null)
+                Parameters = e.Parameter as AppIsUpdatingPageParameters;
+
+            Parameters.NavBar.IsEnabled = false;
+
         }
 
         private async void AppIsUpdatingPage_OnLoaded(object sender, RoutedEventArgs e)
@@ -37,6 +57,7 @@ namespace ForecastUWP.Pages
             var result = await AutoUpdateManager.TryToUpdateAsync(info);
             if (!result.Succeeded)
             {
+                Parameters.NavBar.IsEnabled = true;
                 FailedMessage.Visibility = Visibility.Visible;
                 UpdatingMessage.Visibility = Visibility.Collapsed;
             }
@@ -44,16 +65,8 @@ namespace ForecastUWP.Pages
 
         private async void GoBackButton_Click(object sender, RoutedEventArgs e)
         {
-            // Attempt restart, with arguments.
-            AppRestartFailureReason result =
-                await CoreApplication.RequestRestartAsync("");
-
-            // Restart request denied, send a toast to tell the user to restart manually.
-            if (result == AppRestartFailureReason.NotInForeground
-                || result == AppRestartFailureReason.Other)
-            {
-                await new Dialogs.PleaseManuallyRestartDialog().ShowAsync();
-            }
+            if (Parameters.ContentFrame.CanGoBack)
+                Parameters.ContentFrame.GoBack();
         }
     }
 }

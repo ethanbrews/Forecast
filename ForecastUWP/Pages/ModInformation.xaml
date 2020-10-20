@@ -44,8 +44,8 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" TextAlignment="Left" Text="Last Updated" />
-                        <TextBlock Grid.Column="1" TextAlignment="Right" Text="A month ago" />
+                        <!--<TextBlock Grid.Column="0" TextAlignment="Left" Text="Last Updated" />
+                        <TextBlock Grid.Column="1" TextAlignment="Right" Text="A month ago" />-->
                     </Grid>
                     
                 </ListViewItem>

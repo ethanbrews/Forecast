@@ -20,7 +20,7 @@
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <LangVersion>latest</LangVersion>
     <GenerateAppInstallerFile>True</GenerateAppInstallerFile>
-    <PackageCertificateThumbprint>1D440CD59D6308FD36A8651604FFC7543B436714</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>72F4F5DEB44A9B72ECCE3C571DD8500B56988ED5</PackageCertificateThumbprint>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
@@ -28,6 +28,7 @@
     <AppxBundlePlatforms>x86|x64</AppxBundlePlatforms>
     <AppInstallerUri>http://storage.ethanbrews.me/Forecast/Release/</AppInstallerUri>
     <HoursBetweenUpdateChecks>168</HoursBetweenUpdateChecks>
+    <PackageCertificateKeyFile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -133,11 +134,13 @@
     <Compile Include="AppWebClient.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Converters\DateTimeToLongStringConverter.cs" />
+    <Compile Include="Converters\InverseBoolConverter.cs" />
     <Compile Include="Converters\InverseBoolToVisibilityConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\PackageNameToDisplayNameConverter.cs" />
     <Compile Include="Data\ForecastWebApp.cs" />
     <Compile Include="Data\Profile.cs" />
+    <Compile Include="Data\RemoteConfig.cs" />
     <Compile Include="Data\Thunderstore.Packages.cs" />
     <Compile Include="Dialogs\AppCrashedApologyDialog.xaml.cs">
       <DependentUpon>AppCrashedApologyDialog.xaml</DependentUpon>
@@ -162,6 +165,7 @@
     <Compile Include="Helpers\StorageHelper.cs" />
     <Compile Include="Helpers\TaskQueue.cs" />
     <Compile Include="Helpers\ThunderstoreImageLoader.cs" />
+    <Compile Include="Helpers\VirtualKeyHelper.cs" />
     <Compile Include="Helpers\WebHelper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -169,8 +173,17 @@
     <Compile Include="Pages\AppIsUpdatingPage.xaml.cs">
       <DependentUpon>AppIsUpdatingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ConfigEditor.xaml.cs">
+      <DependentUpon>ConfigEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Create.xaml.cs">
       <DependentUpon>Create.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DebugInformation.xaml.cs">
+      <DependentUpon>DebugInformation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ExportedTextPage.xaml.cs">
+      <DependentUpon>ExportedTextPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ModInformation.xaml.cs">
       <DependentUpon>ModInformation.xaml</DependentUpon>
@@ -248,7 +261,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\ConfigEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Create.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DebugInformation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ExportedTextPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -281,10 +306,10 @@
       <Version>1.11.24</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Analytics">
-      <Version>3.4.1</Version>
+      <Version>3.4.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Crashes">
-      <Version>3.4.1</Version>
+      <Version>3.4.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.10</Version>
@@ -295,11 +320,17 @@
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>6.1.1</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls.DataGrid">
+      <Version>6.1.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Media">
       <Version>6.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
       <Version>2.4.3</Version>
+    </PackageReference>
+    <PackageReference Include="Monaco.Editor">
+      <Version>0.8.1-alpha</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>12.0.3</Version>

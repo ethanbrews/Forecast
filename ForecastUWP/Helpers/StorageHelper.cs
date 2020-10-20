@@ -68,10 +68,13 @@ namespace ForecastUWP.Helpers
 
         public enum CopyCollisionOptions { FailIfExists, ReplaceExisting, SkipExisting }
 
-        public static async Task CopyFolderAsync(StorageFolder source, StorageFolder destination, CopyCollisionOptions collisionOptions = CopyCollisionOptions.ReplaceExisting)
+        public static async Task CopyFolderAsync(StorageFolder source, StorageFolder destination, CopyCollisionOptions collisionOptions = CopyCollisionOptions.ReplaceExisting, string[] excludeNames = null)
         {
             foreach (var item in await source.GetItemsAsync())
             {
+                if (excludeNames != null && excludeNames.Contains(item.Name))
+                    continue;
+                
                 if (item.IsOfType(StorageItemTypes.File))
                 {
                     if (!StorageHelper.DoesFileExist(destination, item.Name) ||

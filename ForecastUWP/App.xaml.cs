@@ -21,6 +21,7 @@ using ForecastUWP.Helpers;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using ForecastUWP.Data;
 
 namespace ForecastUWP
 {
@@ -29,7 +30,8 @@ namespace ForecastUWP
     {
         NONE,
         CANNOT_GET_THUNDERSTORE_PACKAGES,
-        CANNOT_GET_UPDATE_INFORMATION
+        CANNOT_GET_UPDATE_INFORMATION,
+        CANNOT_LOAD_REMOTE_CONFIG
     }
 
     /// <summary>
@@ -38,9 +40,11 @@ namespace ForecastUWP
     sealed partial class App : Application
     {
 
-        public static ForecastUWP.Data.Thunderstore.Packages.Package[] ThunderstorePackages;
+        public static ForecastUWP.Data.Thunderstore.Packages.Package[] ThunderstorePackages = null;
         public static ApplicationErrorState ErrorState { get; private set; } = ApplicationErrorState.NONE;
-        public static event EventHandler<ApplicationErrorState> ApplicationErrorStateChanged; 
+        public static event EventHandler<ApplicationErrorState> ApplicationErrorStateChanged;
+        public static bool CanLoadRemoteConfig = false;
+        public static RemoteConfig RemoteAppConfig = null;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -48,8 +52,10 @@ namespace ForecastUWP
         /// </summary>
         public App()
         {
+#if !DEBUG
             AppCenter.Start(Secrets.AppCenterSecret,
                 typeof(Analytics), typeof(Crashes));
+#endif
             this.InitializeComponent();
             this.Suspending += OnSuspending;
         }
@@ -99,16 +105,38 @@ namespace ForecastUWP
                 // Ensure the current window is active
                 try
                 {
-                    ThunderstorePackages =
-                        await AppWebClient.GetObjectAsync(Constants.ThunderstorePackagesApiEndpoint,
-                                s => Data.Thunderstore.Packages.Package.FromJson(s)) as
-                            Data.Thunderstore.Packages.Package
-                            [];
+                    var packages = await AppWebClient.GetObjectAsync(Constants.ThunderstorePackagesApiEndpoint,
+                            s => Data.Thunderstore.Packages.Package.FromJson(s)) as
+                        Data.Thunderstore.Packages.Package
+                        [];
+
+                    ThunderstorePackages = packages.Where(x => !(new string[]
+                    {
+                        "ebkr-r2modman",
+                        "HoodedDeath-RiskOfDeathModManager",
+                        "scottbot95-RoR2ModManager",
+                        "ethanbrews-RiskOfRainModManager",
+                        "MythicManiac-MythicModManager",
+                        "ethanbrews-Forecast_Mod_Manager"
+                    }).Contains(x.FullName)).ToArray();
                 }
                 catch (Exception ex)
                 {
                     ErrorState = ApplicationErrorState.CANNOT_GET_THUNDERSTORE_PACKAGES;
                     ApplicationErrorStateChanged?.Invoke(this, ErrorState);
+                    Crashes.TrackError(ex);
+                }
+
+                try
+                {
+                    RemoteAppConfig = await AppWebClient.GetObjectAsync(Constants.ForecastRemoteConfigApiEndpoint, s => RemoteConfig.FromJson(s)) as RemoteConfig;
+                } catch (Exception ex)
+                {
+                    if (ErrorState == ApplicationErrorState.NONE)
+                    {
+                        ErrorState = ApplicationErrorState.CANNOT_LOAD_REMOTE_CONFIG;
+                        ApplicationErrorStateChanged?.Invoke(this, ErrorState);
+                    }
                     Crashes.TrackError(ex);
                 }
 

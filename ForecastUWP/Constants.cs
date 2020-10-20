@@ -14,5 +14,7 @@ namespace ForecastUWP
         public static Uri ForecastProfileStoreApiEndpoint = new Uri("https://forecast.ethanbrews.me/api/v1/");
         public static Uri ForecastProfileStoreFindApiEndpoint = new Uri(ForecastProfileStoreApiEndpoint, "find");
         public static Uri ForecastProfileStoreSubmitApiEndpoint = new Uri(ForecastProfileStoreApiEndpoint, "submit");
+
+        public static Uri ForecastRemoteConfigApiEndpoint = new Uri("https://api.ethanbrews.me/rc/api/v1/Forecast/");
     }
 }

@@ -25,11 +25,11 @@
             <TextBlock TextAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource BodyTextBlockStyle}" Text="The app will restart when the update is complete" />
             <ProgressRing Margin="0 20 0 0" IsActive="True" Width="50" Height="50" />
         </StackPanel>
-        <StackPanel x:Name="FailedMessage" Grid.Row="1" Grid.Column="1">
+        <StackPanel Visibility="Collapsed" x:Name="FailedMessage" Grid.Row="1" Grid.Column="1">
             <TextBlock TextAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" Text="Update Failed" />
             <TextBlock TextAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource BaseTextBlockStyle}" Text="If crash reports are enabled, this will be reported automatically." />
             <TextBlock TextAlignment="Center" HorizontalAlignment="Center" Margin="0 30 0 0" Style="{StaticResource BodyTextBlockStyle}" Text="" />
-            <Button Click="GoBackButton_Click" FontSize="18" HorizontalAlignment="Center" Content="Restart App" Width="300" Height="60" />
+            <Button Click="GoBackButton_Click" FontSize="18" HorizontalAlignment="Center" Content="Go Back" Width="300" Height="60" />
         </StackPanel>
     </Grid>
 </Page>
