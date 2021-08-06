@@ -1,0 +1,24 @@
+﻿<ContentDialog
+    x:Class="Forecast2Uwp.Dialogs.PackSharedDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Forecast2Uwp.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+            <TextBlock Margin="0 0 0 20" HorizontalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}">Shared '<Run Text="{Binding PackTitle}" />'</TextBlock>
+            <TextBlock Margin="0 0 0 30" HorizontalAlignment="Center" Text="{Binding ShareCode}" FontSize="64" FontFamily="Consolas" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Margin="0 0 5 0" HorizontalAlignment="Stretch" Content="Close" Click="CloseButton_Click" />
+                <Button Margin="5 0 0 0" HorizontalAlignment="Stretch" Grid.Column="1" Background="{ThemeResource SystemAccentColor}" Content="Copy Code" Click="CopyButton_Click" />
+            </Grid>
+        </StackPanel>
+    </Grid>
+</ContentDialog>

@@ -1,0 +1,42 @@
+﻿<Page
+    x:Class="Forecast2Uwp.Settings.Debug"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Forecast2Uwp.Settings"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:usercontrols="using:Forecast2Uwp.UserControls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <StackPanel Margin="20">
+            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Remote Configuration" />
+            <usercontrols:LongStringPanel Margin="0 20 0 20" HorizontalAlignment="Left" Width="600" Caption="{Binding RemoteConfigUrl}" Text="{x:Bind RemoteConfigJson}" Title="Remote Configuration" />
+            <StackPanel Orientation="Horizontal">
+                <Button Margin="0 0 10 0" Content="Reload Remote Config" Click="ReloadRemoteConfigButton_Click" />
+                <Button Margin="0 0 10 0" Content="Set Remote Config URL">
+                    <Button.Flyout>
+                        <Flyout>
+                            <StackPanel Margin="10">
+                                <TextBox x:Name="RemoteConfigUrlBox" Text="{x:Bind RemoteConfigUrl}" TextChanged="RemoteConfigUrlBox_TextChanged" />
+                                <Button Margin="0 10 0 0" Click="UpdateRemoteConfigUrlButton_Click" Content="Update URL" x:Name="UpdateRemoteConfigUrlButton" />
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+                <Button Margin="0 0 10 0" Content="Reset to default value">
+                    <Button.Flyout>
+                        <Flyout>
+                            <StackPanel Margin="10">
+                                <TextBlock Text="Reset to the default value?" />
+                                <Button Margin="0 10 0 0" Click="ResetRemoteConfigUrlButton_Click" Content="Reset URL" />
+                            </StackPanel>
+                        </Flyout>
+                    </Button.Flyout>
+                </Button>
+            </StackPanel>
+            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Local Settings" />
+            <usercontrols:LongStringPanel Margin="0 20 0 20" HorizontalAlignment="Left" Width="600" Caption="" Text="{x:Bind LocalSettings}" Title="Remote Configuration" />
+        </StackPanel>
+    </Grid>
+</Page>

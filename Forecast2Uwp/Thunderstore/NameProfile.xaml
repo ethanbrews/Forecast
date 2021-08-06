@@ -1,0 +1,79 @@
+﻿<Page
+    x:Class="Forecast2Uwp.Thunderstore.NameProfile"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Forecast2Uwp.Thunderstore"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:converters="using:Forecast2Uwp.Converter"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <AcrylicBrush x:Key="SuccessAcrylicBrush" BackgroundSource="Backdrop"
+            TintOpacity="0.8" TintColor="#FF107C10" FallbackColor="#FF107C10" />
+        <AcrylicBrush x:Key="ErrorAcrylicBrush" BackgroundSource="Backdrop"
+            TintOpacity="0.8" TintColor="#FFE74856" FallbackColor="#FFE74856" />
+        <AcrylicBrush x:Key="ErrorAcrylicLowBrush" BackgroundSource="Backdrop"
+            TintOpacity="0.8" TintColor="#FFad444d" FallbackColor="#FFad444d" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Page.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="70" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="70" />
+        </Grid.ColumnDefinitions>
+        <Grid CornerRadius="10" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1" Background="{ThemeResource SystemControlAcrylicElementBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.ColumnSpan="2" Grid.RowSpan="1" Margin="50 50 50 5" Orientation="Vertical" HorizontalAlignment="Left">
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="New Profile" />
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+                    <TextBox x:Name="NameTextBox" TextChanged="TextBox_TextChanged" Margin="0 20 0 0" MinWidth="300" MaxWidth="400" Text="New Profile" Header="Profile Name" />
+                    <Grid CornerRadius="5" Padding="10 5 10 5" Height="32" Margin="8 46 0 0" Visibility="{Binding IsSuccess, Converter={StaticResource BoolToVisibilityConverter}}" Background="{ThemeResource SuccessAcrylicBrush}">
+                        <FontIcon FontSize="13" FontFamily="Segoe MDL2 Assets" Glyph="&#xE8FB;"/>
+                    </Grid>
+                    <Grid CornerRadius="5" Padding="10 5 10 5" Height="32" Margin="8 46 0 0" Visibility="{Binding IsError, Converter={StaticResource BoolToVisibilityConverter}}" Background="{ThemeResource ErrorAcrylicBrush}">
+                        <FontIcon FontSize="13" FontFamily="Segoe MDL2 Assets" Glyph="&#xE8BB;"/>
+                    </Grid>
+                    <Grid CornerRadius="5" Padding="10 5 10 5" Height="32" Margin="8 46 0 0" Visibility="{Binding IsError, Converter={StaticResource BoolToVisibilityConverter}}" Background="{ThemeResource ErrorAcrylicLowBrush}">
+                        <TextBlock Visibility="{Binding Error_TooShort}" Text="Must be longer than 3 characters" />
+                        <TextBlock Visibility="{Binding Error_Unique}" Text="Name must be unique" />
+                        <TextBlock Visibility="{Binding Error_SpecialChars}" Text="Can't contain special characters" />
+                    </Grid>
+                </StackPanel>
+                <CheckBox x:Name="AutoUpdateCheckbox" Margin="1 15 0 0" Content="Keep mods up-to-date automatically" />
+                <TextBlock Padding="3 10 0 0" Style="{StaticResource TitleTextBlockStyle}" FontSize="16" Text="Packages to be Installed" />
+            </StackPanel>
+            <ScrollViewer Margin="45 10 50 5" Grid.ColumnSpan="2" Grid.Row="1" HorizontalScrollMode="Disabled" VerticalScrollMode="Enabled" VerticalScrollBarVisibility="Visible">
+                <ListView SelectionMode="None" ItemsSource="{Binding ViewModel.AllSelectedPackages}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <controls:ImageEx Width="16" Height="20" Margin="0 0 5 0" CornerRadius="3" Source="{Binding Versions[0].Icon}" Grid.Column="0" />
+                                <TextBlock Text="{Binding Name}" Grid.Column="1" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+            <Button Margin="20" Background="{ThemeResource SystemAccentColor}" Click="Button_Click" IsEnabled="{Binding IsSuccess}" Grid.Row="2" Grid.Column="2" Content="Install" />
+        </Grid>
+    </Grid>
+</Page>

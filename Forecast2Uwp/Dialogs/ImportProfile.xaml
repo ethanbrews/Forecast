@@ -1,0 +1,27 @@
+﻿<ContentDialog
+    x:Class="Forecast2Uwp.Dialogs.ImportProfile"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Forecast2Uwp.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    PrimaryButtonText="Cancel"
+    SecondaryButtonText="Install"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="Enter Share Code" HorizontalAlignment="Center" FontSize="22" Style="{StaticResource TitleTextBlockStyle}" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock x:Name="TB1" Text="-" FontFamily="Consolas" FontSize="64" />
+                <TextBlock x:Name="TB2" Text="-" FontFamily="Consolas" FontSize="64" />
+                <TextBlock x:Name="TB3" Text="-" FontFamily="Consolas" FontSize="64" />
+                <TextBlock x:Name="TB4" Text="-" FontFamily="Consolas" FontSize="64" />
+                <TextBlock x:Name="TB5" Text="-" FontFamily="Consolas" FontSize="64" />
+            </StackPanel>
+            <TextBlock x:Name="ProfileName" HorizontalAlignment="Center" Text="New Profile" />
+        </StackPanel>
+    </Grid>
+</ContentDialog>

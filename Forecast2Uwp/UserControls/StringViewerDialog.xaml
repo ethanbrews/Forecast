@@ -1,0 +1,36 @@
+﻿<ContentDialog
+    x:Class="Forecast2Uwp.UserControls.StringViewerDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Forecast2Uwp.UserControls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:converters="using:Forecast2Uwp.Converter">
+
+    <ContentDialog.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
+    </ContentDialog.Resources>
+
+    <StackPanel>
+        <TextBlock x:Name="Title" Style="{StaticResource TitleTextBlockStyle}" />
+        <ScrollViewer VerticalScrollMode="Auto" MaxHeight="400">
+            <TextBlock x:Name="Text" Style="{StaticResource BodyTextBlockStyle}" />
+        </ScrollViewer>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1" MinWidth="70" Click="CopyButton_Click">
+                <Grid>
+                    <TextBlock Text="Copied" Visibility="{Binding ShowCopiedText, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    <TextBlock Text="Copy" Visibility="{Binding ShowCopiedText, Converter={StaticResource InverseBoolToVisibilityConverter}}" />
+                </Grid>
+            </Button>
+            <Button Background="{ThemeResource SystemAccentColor}" Margin="5 0 0 0" Width="70" Grid.Column="2" Content="Close" Click="HideButton_Click" />
+        </Grid>
+    </StackPanel>
+</ContentDialog>

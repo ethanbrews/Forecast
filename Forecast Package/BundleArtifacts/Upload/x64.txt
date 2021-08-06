@@ -1,0 +1,6 @@
+MainPackage=C:\Users\ethan\source\repos\Forecast2Uwp\Forecast Package\bin\x64\Release\Upload\Forecast Package_1.0.2.0_x64.msix
+SymbolPackage=C:\Users\ethan\source\repos\Forecast2Uwp\Forecast Package\bin\x64\Release\Upload\Forecast Package_1.0.2.0\Forecast Package_1.0.2.0_x64.appxsym
+ResourcePack=C:\Users\ethan\source\repos\Forecast2Uwp\Forecast Package\bin\x64\Release\Upload\Forecast Package_1.0.2.0_scale-100.msix
+ResourcePack=C:\Users\ethan\source\repos\Forecast2Uwp\Forecast Package\bin\x64\Release\Upload\Forecast Package_1.0.2.0_scale-125.msix
+ResourcePack=C:\Users\ethan\source\repos\Forecast2Uwp\Forecast Package\bin\x64\Release\Upload\Forecast Package_1.0.2.0_scale-150.msix
+ResourcePack=C:\Users\ethan\source\repos\Forecast2Uwp\Forecast Package\bin\x64\Release\Upload\Forecast Package_1.0.2.0_scale-400.msix
